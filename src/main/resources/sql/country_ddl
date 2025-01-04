@@ -1,0 +1,7 @@
+CREATE TABLE `football_db`.`country` (
+  `id` INT NOT NULL,
+  `code` VARCHAR(45) NULL,
+  `name` VARCHAR(100) NULL,
+  `flag` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);

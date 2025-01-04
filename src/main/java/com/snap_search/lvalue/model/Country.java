@@ -1,12 +1,17 @@
 package com.snap_search.lvalue.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Country {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
+	private Long id; // Primary Key
+
 	private String code; // 국가 코드
 	private String name; // 국가명
 	private String flag; // 국기 url
@@ -19,6 +24,14 @@ public class Country {
 
 	public Country() {
 
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getCode() {

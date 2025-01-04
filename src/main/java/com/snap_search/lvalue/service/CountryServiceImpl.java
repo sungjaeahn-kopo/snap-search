@@ -34,11 +34,21 @@ public class CountryServiceImpl implements CountryService {
 		ApiResponse response = responseMono.block();
 		if (response != null && response.getResponse() != null) {
 			List<Country> countries = response.getResponse().stream()
-				.map(apiCountry -> new Country(
-					apiCountry.getCode(),
-					apiCountry.getName(),
-					apiCountry.getFlag()
-				))
+				.map(apiCountry -> {
+					Country exisitingCountry = countryRepository.findByCodeAndName(apiCountry.getCode(),
+						apiCountry.getName());
+
+					if (exisitingCountry != null) {
+						exisitingCountry.setFlag(apiCountry.getFlag());
+						return exisitingCountry;
+					} else {
+						return new Country(
+							apiCountry.getCode(),
+							apiCountry.getName(),
+							apiCountry.getFlag()
+						);
+					}
+				})
 				.collect(Collectors.toList());
 			return countryRepository.saveAll(countries);
 		}
