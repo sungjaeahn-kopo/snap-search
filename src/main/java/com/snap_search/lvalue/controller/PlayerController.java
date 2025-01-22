@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.snap_search.lvalue.model.Player;
+import com.snap_search.lvalue.dto.TeamWithPlayersDTO;
 import com.snap_search.lvalue.service.PlayerService;
 
 @RestController
@@ -20,7 +21,7 @@ public class PlayerController {
 	}
 
 	@GetMapping("/fetch")
-	public List<Player> fetchCountries() {
-		return playerService.fetchAndSavePlayers();
+	public List<TeamWithPlayersDTO> fetchCountries(@RequestParam("teamId") List<Long> teamIds) {
+		return playerService.fetchAndSavePlayers(teamIds);
 	}
 }

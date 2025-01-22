@@ -44,4 +44,6 @@ public interface CountryLeagueMappingRepository extends JpaRepository<CountryLea
 		""")
 	List<CountryLeagueMap> findLeaguesBySeasonAndCountryAndLeague(@Param("season") String season,
 		@Param("countryId") Long countryId, @Param("leagueId") Long leagueId);
+
+	List<CountryLeagueMap> findByTeamIdAndLeagueSeasonAndLeagueId(Long teamId, String season, Long leagueId);
 }

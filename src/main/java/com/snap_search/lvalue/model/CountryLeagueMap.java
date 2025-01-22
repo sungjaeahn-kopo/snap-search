@@ -1,11 +1,7 @@
 package com.snap_search.lvalue.model;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,10 +22,6 @@ public class CountryLeagueMap {
 	private Long teamId;
 	private String teamName;
 	private String teamLogo;
-
-	// Player와의 관계 설정
-	@OneToMany(mappedBy = "countryLeagueMap", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Player> players;
 
 	public CountryLeagueMap() {
 	}
@@ -169,11 +161,11 @@ public class CountryLeagueMap {
 		this.teamLogo = teamLogo;
 	}
 
-	public List<Player> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(List<Player> players) {
-		this.players = players;
-	}
+	// public List<Player> getPlayers() {
+	// 	return players;
+	// }
+	//
+	// public void setPlayers(List<Player> players) {
+	// 	this.players = players;
+	// }
 }

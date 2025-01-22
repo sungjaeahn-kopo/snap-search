@@ -2,8 +2,8 @@ package com.snap_search.lvalue.service;
 
 import java.util.List;
 
-import com.snap_search.lvalue.model.Player;
+import com.snap_search.lvalue.dto.TeamWithPlayersDTO;
 
 public interface PlayerService {
-	List<Player> fetchAndSavePlayers();
+	List<TeamWithPlayersDTO> fetchAndSavePlayers(List<Long> teamIds);
 }
