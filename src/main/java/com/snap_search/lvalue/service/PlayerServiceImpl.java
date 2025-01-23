@@ -35,6 +35,7 @@ public class PlayerServiceImpl implements PlayerService {
 		this.teamRepository = teamRepository;
 	}
 
+	@SuppressWarnings("checkstyle:RegexpMultiline")
 	@Override
 	public List<TeamWithPlayersDTO> fetchAndSavePlayers(List<Long> teamIds) {
 		return teamIds.stream()
@@ -58,7 +59,7 @@ public class PlayerServiceImpl implements PlayerService {
 							playerTeam.getTeam().getId(),
 							playerTeam.getTeam().getName(),
 							playerTeam.getTeam().getLogo(),
-							List.of(140L) // 리그 ID를 동적으로 설정 가능
+							List.of(40L) // 리그 ID를 동적으로 설정 가능
 						);
 
 						// Player 데이터 저장
@@ -92,56 +93,27 @@ public class PlayerServiceImpl implements PlayerService {
 			.collect(Collectors.toList());
 	}
 
-	// @Override
-	// public List<TeamWithPlayersDTO> fetchAndSavePlayers(List<Long> teamIds) {
-	// 	// API 호출 및 데이터 저장 로직
-	// 	Mono<ApiResponse<ApiPlayerTeam>> responseMono = webClient.get()
-	// 		.uri(uriBuilder -> uriBuilder
-	// 			.path("/players/squads")
-	// 			.queryParam("team", 34)
-	// 			.build())
-	// 		.retrieve()
-	// 		.bodyToMono(new ParameterizedTypeReference<ApiResponse<ApiPlayerTeam>>() {
-	// 		});
-	//
-	// 	ApiResponse<ApiPlayerTeam> response = responseMono.block();
-	//
-	// 	if (response != null && response.getResponse() != null) {
-	// 		// 팀과 플레이어 데이터를 저장
-	// 		List<TeamWithPlayersDTO> result = response.getResponse().stream().map(playerTeam -> {
-	// 			// 팀 정보를 가져오거나 생성
-	// 			Team team = getOrCreateTeam(playerTeam.getTeam().getId(), playerTeam.getTeam().getName(),
-	// 				playerTeam.getTeam().getLogo(), List.of(39L)); // 예: 리그 ID
-	//
-	// 			// Player 데이터 저장
-	// 			List<PlayerDTO> players = playerTeam.getPlayers().stream().map(apiPlayer -> {
-	// 				Player player = playerRepository.findById(apiPlayer.getId()).orElse(new Player());
-	// 				player.setId(apiPlayer.getId());
-	// 				player.setName(apiPlayer.getName());
-	// 				player.setAge(apiPlayer.getAge());
-	// 				player.setNumber(apiPlayer.getNumber());
-	// 				player.setPosition(apiPlayer.getPosition());
-	// 				player.setPhoto(apiPlayer.getPhoto());
-	// 				player.setTeam(team); // Team 매핑
-	// 				playerRepository.save(player);
-	//
-	// 				return new PlayerDTO(
-	// 					player.getId(),
-	// 					player.getName(),
-	// 					player.getAge(),
-	// 					player.getNumber(),
-	// 					player.getPosition(),
-	// 					player.getPhoto()
-	// 				);
-	// 			}).collect(Collectors.toList());
-	//
-	// 			return new TeamWithPlayersDTO(players, team.getId());
-	// 		}).collect(Collectors.toList());
-	//
-	// 		return result;
-	// 	}
-	// 	return List.of();
-	// }
+	@Override
+	public List<TeamWithPlayersDTO> getPlayers(Long teamId) {
+		// Team ID로 Player 조회
+		List<Player> players = playerRepository.findByTeamId(teamId);
+
+		// TeamWithPlayersDTO 생성
+		TeamWithPlayersDTO teamWithPlayersDTO = new TeamWithPlayersDTO(
+			players.stream().map(player -> new PlayerDTO(
+				player.getId(),
+				player.getName(),
+				player.getAge(),
+				player.getNumber(),
+				player.getPosition(),
+				player.getPhoto()
+			)).collect(Collectors.toList()),
+			teamId
+		);
+
+		// DTO를 리스트로 반환 (필요시 수정 가능)
+		return List.of(teamWithPlayersDTO);
+	}
 
 	// CountryLeagueMap을 생성하거나 가져오는 private 메소드
 	private Team getOrCreateTeam(Long teamId, String teamName, String teamLogo, List<Long> leagueIds) {

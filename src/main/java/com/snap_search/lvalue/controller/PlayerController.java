@@ -24,4 +24,9 @@ public class PlayerController {
 	public List<TeamWithPlayersDTO> fetchCountries(@RequestParam("teamId") List<Long> teamIds) {
 		return playerService.fetchAndSavePlayers(teamIds);
 	}
+
+	@GetMapping("/playerInfo")
+	public List<TeamWithPlayersDTO> getPlayers(@RequestParam("teamId") Long teamId) {
+		return playerService.getPlayers(teamId);
+	}
 }
