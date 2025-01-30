@@ -1,6 +1,7 @@
 package com.snap_search.lvalue.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,5 +34,13 @@ public class MatchController {
 	) {
 		List<Match> matches = matchService.getMatchesByTeam(teamId, season);
 		return ResponseEntity.ok(matches);
+	}
+
+	@GetMapping("/upcoming")
+	public ResponseEntity<Match> getUpcomingMatchByTeam(@RequestParam("teamId") int teamId,
+		@RequestParam("season") int season) {
+		Optional<Match> match = matchService.getUpcomingMatchByTeam(teamId, season);
+		return match.map(ResponseEntity::ok)
+			.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 }
