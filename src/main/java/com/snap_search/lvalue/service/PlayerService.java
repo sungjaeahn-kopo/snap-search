@@ -7,5 +7,5 @@ import com.snap_search.lvalue.dto.TeamWithPlayersDTO;
 public interface PlayerService {
 	List<TeamWithPlayersDTO> fetchAndSavePlayers(List<Long> teamIds);
 
-	List<TeamWithPlayersDTO> getPlayers(Long teamId);
+	TeamWithPlayersDTO getPlayers(Long teamId);
 }

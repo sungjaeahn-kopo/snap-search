@@ -26,7 +26,7 @@ public class PlayerController {
 	}
 
 	@GetMapping("/playerInfo")
-	public List<TeamWithPlayersDTO> getPlayers(@RequestParam("teamId") Long teamId) {
+	public TeamWithPlayersDTO getPlayers(@RequestParam("teamId") Long teamId) {
 		return playerService.getPlayers(teamId);
 	}
 }

@@ -94,12 +94,12 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public List<TeamWithPlayersDTO> getPlayers(Long teamId) {
+	public TeamWithPlayersDTO getPlayers(Long teamId) {
 		// Team ID로 Player 조회
 		List<Player> players = playerRepository.findByTeamId(teamId);
 
-		// TeamWithPlayersDTO 생성
-		TeamWithPlayersDTO teamWithPlayersDTO = new TeamWithPlayersDTO(
+		// DTO를 리스트로 반환 (필요시 수정 가능)
+		return new TeamWithPlayersDTO(
 			players.stream().map(player -> new PlayerDTO(
 				player.getId(),
 				player.getName(),
@@ -110,9 +110,6 @@ public class PlayerServiceImpl implements PlayerService {
 			)).collect(Collectors.toList()),
 			teamId
 		);
-
-		// DTO를 리스트로 반환 (필요시 수정 가능)
-		return List.of(teamWithPlayersDTO);
 	}
 
 	// CountryLeagueMap을 생성하거나 가져오는 private 메소드
