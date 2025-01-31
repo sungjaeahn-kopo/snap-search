@@ -9,6 +9,7 @@ public class ApiLeague {
 	private LeagueData league; // 리그 데이터
 	private ApiCountry country; // 국가 데이터
 	private List<SeasonData> seasons; // 시즌 데이터
+	private ApiFixtureLeague fixtureLeague;
 
 	// 내부 클래스: League 데이터
 	public static class LeagueData {
@@ -83,6 +84,75 @@ public class ApiLeague {
 		}
 	}
 
+	/**
+	 * API fixtures의 league 객체를 받기 위함
+	 */
+	public static class ApiFixtureLeague {
+		private Long leagueId;
+		private String leagueName;
+		private String leagueCountry;
+		private String leagueLogo;
+		private String leagueFlag;
+		private Long leagueSeason;
+		private String leagueRound;
+
+		public Long getLeagueId() {
+			return leagueId;
+		}
+
+		public void setLeagueId(Long leagueId) {
+			this.leagueId = leagueId;
+		}
+
+		public String getLeagueName() {
+			return leagueName;
+		}
+
+		public void setLeagueName(String leagueName) {
+			this.leagueName = leagueName;
+		}
+
+		public String getLeagueCountry() {
+			return leagueCountry;
+		}
+
+		public void setLeagueCountry(String leagueCountry) {
+			this.leagueCountry = leagueCountry;
+		}
+
+		public String getLeagueLogo() {
+			return leagueLogo;
+		}
+
+		public void setLeagueLogo(String leagueLogo) {
+			this.leagueLogo = leagueLogo;
+		}
+
+		public String getLeagueFlag() {
+			return leagueFlag;
+		}
+
+		public void setLeagueFlag(String leagueFlag) {
+			this.leagueFlag = leagueFlag;
+		}
+
+		public Long getLeagueSeason() {
+			return leagueSeason;
+		}
+
+		public void setLeagueSeason(Long leagueSeason) {
+			this.leagueSeason = leagueSeason;
+		}
+
+		public String getLeagueRound() {
+			return leagueRound;
+		}
+
+		public void setLeagueRound(String leagueRound) {
+			this.leagueRound = leagueRound;
+		}
+	}
+
 	// Getters and Setters
 	public LeagueData getLeague() {
 		return league;
@@ -106,5 +176,13 @@ public class ApiLeague {
 
 	public void setSeasons(List<SeasonData> seasons) {
 		this.seasons = seasons;
+	}
+
+	public ApiFixtureLeague getFixtureLeague() {
+		return fixtureLeague;
+	}
+
+	public void setFixtureLeague(ApiFixtureLeague fixtureLeague) {
+		this.fixtureLeague = fixtureLeague;
 	}
 }

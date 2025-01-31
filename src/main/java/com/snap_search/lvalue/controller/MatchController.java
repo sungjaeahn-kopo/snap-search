@@ -43,4 +43,16 @@ public class MatchController {
 		return match.map(ResponseEntity::ok)
 			.orElseGet(() -> ResponseEntity.notFound().build());
 	}
+
+	@GetMapping("/fetch")
+	public ResponseEntity<List<Match>> fetchMatchData(@RequestParam("leagueId") Long leagueId,
+		@RequestParam("teamId") int teamId) {
+		List<Match> updatedMatches = matchService.fetchMatcheData(leagueId, teamId);
+
+		if (updatedMatches.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+
+		return ResponseEntity.ok(updatedMatches);
+	}
 }

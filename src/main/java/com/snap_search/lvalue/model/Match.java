@@ -13,6 +13,7 @@ public class Match {
 	private String fixtureDate;
 	private String fixtureStatusShort;
 	private String leagueName;
+	private int leagueId;
 	private int leagueSeason;
 	private String leagueRound;
 
@@ -29,6 +30,10 @@ public class Match {
 	private Integer scoreHalftimeAway;
 	private Integer scoreFulltimeHome;
 	private Integer scoreFulltimeAway;
+
+	private String venueId;
+	private String venueName;
+	private String venueCity;
 
 	public Long getFixtureId() {
 		return fixtureId;
@@ -60,6 +65,14 @@ public class Match {
 
 	public void setLeagueName(String leagueName) {
 		this.leagueName = leagueName;
+	}
+
+	public int getLeagueId() {
+		return leagueId;
+	}
+
+	public void setLeagueId(int leagueId) {
+		this.leagueId = leagueId;
 	}
 
 	public int getLeagueSeason() {
@@ -172,5 +185,29 @@ public class Match {
 
 	public void setScoreFulltimeAway(Integer scoreFulltimeAway) {
 		this.scoreFulltimeAway = scoreFulltimeAway;
+	}
+
+	public String getVenueId() {
+		return venueId;
+	}
+
+	public void setVenueId(String venueId) {
+		this.venueId = venueId;
+	}
+
+	public String getVenueName() {
+		return venueName;
+	}
+
+	public void setVenueName(String venueName) {
+		this.venueName = venueName;
+	}
+
+	public String getVenueCity() {
+		return venueCity;
+	}
+
+	public void setVenueCity(String venueCity) {
+		this.venueCity = venueCity;
 	}
 }

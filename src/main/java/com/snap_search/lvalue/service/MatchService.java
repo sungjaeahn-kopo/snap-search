@@ -28,4 +28,6 @@ public interface MatchService {
 	 * @return
 	 */
 	Optional<Match> getUpcomingMatchByTeam(int teamId, int season);
+
+	List<Match> fetchMatcheData(Long leagueId, int teamId);
 }
