@@ -1,6 +1,8 @@
 package com.snap_search.lvalue.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -8,6 +10,9 @@ import jakarta.persistence.Table;
 @Table(name = "fixture_events")
 public class MatchEvents {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;  // 개별 이벤트의 고유 ID 추가
+
 	private Long fixtureId;
 	private int timeElapsed;
 	private int timeExtra;
@@ -16,11 +21,27 @@ public class MatchEvents {
 	private String teamLogo;
 	private int playerId;
 	private String playerName;
-	private int assistId;
+	private Integer assistId;
 	private String assistName;
 	private String eventType;
 	private String detail;
 	private String comments;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
 
 	public Long getFixtureId() {
 		return fixtureId;
@@ -86,11 +107,11 @@ public class MatchEvents {
 		this.playerName = playerName;
 	}
 
-	public int getAssistId() {
+	public Integer getAssistId() {
 		return assistId;
 	}
 
-	public void setAssistId(int assistId) {
+	public void setAssistId(Integer assistId) {
 		this.assistId = assistId;
 	}
 

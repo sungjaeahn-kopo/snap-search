@@ -11,7 +11,7 @@ public class MatchEventDTO {
 	private String teamLogo;
 	private int playerId;
 	private String playerName;
-	private int assistId;
+	private Integer assistId;
 	private String assistName;
 	private String assistType;
 	private String detail;
@@ -69,7 +69,7 @@ public class MatchEventDTO {
 		return playerName;
 	}
 
-	public int getAssistId() {
+	public Integer getAssistId() {
 		return assistId;
 	}
 
