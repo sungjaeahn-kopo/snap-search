@@ -29,5 +29,5 @@ public interface MatchService {
 	 */
 	Optional<Match> getUpcomingMatchByTeam(int teamId, int season);
 
-	List<Match> fetchMatcheData(Long leagueId, int teamId);
+	List<Match> fetchMatcheData(int teamId);
 }

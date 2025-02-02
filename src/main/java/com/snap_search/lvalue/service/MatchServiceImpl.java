@@ -65,11 +65,10 @@ public class MatchServiceImpl implements MatchService {
 	 * @return
 	 */
 	@Override
-	public List<Match> fetchMatcheData(Long leagueId, int teamId) {
+	public List<Match> fetchMatcheData(int teamId) {
 		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 		// DB에서 더미 데이터 중 현재 시간 이전까지 진행되지 않은 경기 목록 조회
-		List<Integer> upcomingFixtureIds = matchRepository.findUpcomingFixtureIds(now.format(FORMATTER), leagueId,
-			teamId);
+		List<Integer> upcomingFixtureIds = matchRepository.findUpcomingFixtureIds(now.format(FORMATTER), teamId);
 
 		if (upcomingFixtureIds.isEmpty()) {
 			return List.of(); // 호출할 fixture_id가 없으면 빈 리스트 반환
@@ -89,7 +88,7 @@ public class MatchServiceImpl implements MatchService {
 			return matchRepository.saveAll(updatedMatches);
 		}
 
-		logger.warn("No matches fetched for leagueId: {} teamId: {}", leagueId, teamId);
+		logger.warn("No matches fetched for leagueId: {} teamId: {}", teamId);
 		return List.of();
 	}
 

@@ -24,7 +24,7 @@ public interface MatchRepository extends JpaRepository<Match, String> {
 	List<Match> findUpcomingMatches(@Param("teamId") int teamId, @Param("season") int season,
 		@Param("today") String today);
 
-	@Query("SELECT m.fixtureId FROM Match m WHERE m.fixtureStatusShort NOT IN ('FT', 'PST') AND (m.teamsHomeId = :teamId OR m.teamsAwayId = :teamId) AND m.leagueId = :leagueId AND m.fixtureDate < :currentDate")
-	List<Integer> findUpcomingFixtureIds(@Param("currentDate") String currentDate, @Param("leagueId") Long leagueId,
+	@Query("SELECT m.fixtureId FROM Match m WHERE m.fixtureStatusShort NOT IN ('FT', 'PST') AND (m.teamsHomeId = :teamId OR m.teamsAwayId = :teamId) AND m.fixtureDate < :currentDate")
+	List<Integer> findUpcomingFixtureIds(@Param("currentDate") String currentDate,
 		@Param("teamId") int teamId);
 }

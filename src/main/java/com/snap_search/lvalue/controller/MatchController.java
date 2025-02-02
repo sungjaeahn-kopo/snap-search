@@ -45,9 +45,8 @@ public class MatchController {
 	}
 
 	@GetMapping("/fetch")
-	public ResponseEntity<List<Match>> fetchMatchData(@RequestParam("leagueId") Long leagueId,
-		@RequestParam("teamId") int teamId) {
-		List<Match> updatedMatches = matchService.fetchMatcheData(leagueId, teamId);
+	public ResponseEntity<List<Match>> fetchMatchData(@RequestParam("teamId") int teamId) {
+		List<Match> updatedMatches = matchService.fetchMatcheData(teamId);
 
 		if (updatedMatches.isEmpty()) {
 			return ResponseEntity.noContent().build();
