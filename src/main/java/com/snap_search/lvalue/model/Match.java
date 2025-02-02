@@ -9,9 +9,12 @@ import jakarta.persistence.Table;
 public class Match {
 	@Id
 	private Long fixtureId;
-
+	private String fixtureReferee;
 	private String fixtureDate;
+	private String fixtureStatusLong;
 	private String fixtureStatusShort;
+	private int fixtureStatusElapsed;
+	private int fixtureStatusExtra;
 	private String leagueName;
 	private int leagueId;
 	private int leagueSeason;
@@ -20,9 +23,12 @@ public class Match {
 	private int teamsHomeId;
 	private String teamsHomeName;
 	private String teamsHomeLogo;
+	private String teamsHomeWinner;
+
 	private int teamsAwayId;
 	private String teamsAwayName;
 	private String teamsAwayLogo;
+	private String teamsAwayWinner;
 
 	private Integer goalsHome;
 	private Integer goalsAway;
@@ -31,9 +37,12 @@ public class Match {
 	private Integer scoreFulltimeHome;
 	private Integer scoreFulltimeAway;
 
-	private String venueId;
-	private String venueName;
-	private String venueCity;
+	private int fixtureVenueId;
+	private String fixtureVenueName;
+	private String fixtureVenueCity;
+
+	private int fixturePeriodsFirst;
+	private int fixturePeriodsSecond;
 
 	public Long getFixtureId() {
 		return fixtureId;
@@ -41,6 +50,14 @@ public class Match {
 
 	public void setFixtureId(Long fixtureId) {
 		this.fixtureId = fixtureId;
+	}
+
+	public String getFixtureReferee() {
+		return fixtureReferee;
+	}
+
+	public void setFixtureReferee(String fixtureReferee) {
+		this.fixtureReferee = fixtureReferee;
 	}
 
 	public String getFixtureDate() {
@@ -51,12 +68,36 @@ public class Match {
 		this.fixtureDate = fixtureDate;
 	}
 
+	public String getFixtureStatusLong() {
+		return fixtureStatusLong;
+	}
+
+	public void setFixtureStatusLong(String fixtureStatusLong) {
+		this.fixtureStatusLong = fixtureStatusLong;
+	}
+
 	public String getFixtureStatusShort() {
 		return fixtureStatusShort;
 	}
 
 	public void setFixtureStatusShort(String fixtureStatusShort) {
 		this.fixtureStatusShort = fixtureStatusShort;
+	}
+
+	public int getFixtureStatusElapsed() {
+		return fixtureStatusElapsed;
+	}
+
+	public void setFixtureStatusElapsed(int fixtureStatusElapsed) {
+		this.fixtureStatusElapsed = fixtureStatusElapsed;
+	}
+
+	public int getFixtureStatusExtra() {
+		return fixtureStatusExtra;
+	}
+
+	public void setFixtureStatusExtra(int fixtureStatusExtra) {
+		this.fixtureStatusExtra = fixtureStatusExtra;
 	}
 
 	public String getLeagueName() {
@@ -115,6 +156,14 @@ public class Match {
 		this.teamsHomeLogo = teamsHomeLogo;
 	}
 
+	public String getTeamsHomeWinner() {
+		return teamsHomeWinner;
+	}
+
+	public void setTeamsHomeWinner(String teamsHomeWinner) {
+		this.teamsHomeWinner = teamsHomeWinner;
+	}
+
 	public int getTeamsAwayId() {
 		return teamsAwayId;
 	}
@@ -137,6 +186,14 @@ public class Match {
 
 	public void setTeamsAwayLogo(String teamsAwayLogo) {
 		this.teamsAwayLogo = teamsAwayLogo;
+	}
+
+	public String getTeamsAwayWinner() {
+		return teamsAwayWinner;
+	}
+
+	public void setTeamsAwayWinner(String teamsAwayWinner) {
+		this.teamsAwayWinner = teamsAwayWinner;
 	}
 
 	public Integer getGoalsHome() {
@@ -187,27 +244,43 @@ public class Match {
 		this.scoreFulltimeAway = scoreFulltimeAway;
 	}
 
-	public String getVenueId() {
-		return venueId;
+	public int getFixtureVenueId() {
+		return fixtureVenueId;
 	}
 
-	public void setVenueId(String venueId) {
-		this.venueId = venueId;
+	public void setFixtureVenueId(int fixtureVenueId) {
+		this.fixtureVenueId = fixtureVenueId;
 	}
 
-	public String getVenueName() {
-		return venueName;
+	public String getFixtureVenueName() {
+		return fixtureVenueName;
 	}
 
-	public void setVenueName(String venueName) {
-		this.venueName = venueName;
+	public void setFixtureVenueName(String fixtureVenueName) {
+		this.fixtureVenueName = fixtureVenueName;
 	}
 
-	public String getVenueCity() {
-		return venueCity;
+	public String getFixtureVenueCity() {
+		return fixtureVenueCity;
 	}
 
-	public void setVenueCity(String venueCity) {
-		this.venueCity = venueCity;
+	public void setFixtureVenueCity(String fixtureVenueCity) {
+		this.fixtureVenueCity = fixtureVenueCity;
+	}
+
+	public int getFixturePeriodsFirst() {
+		return fixturePeriodsFirst;
+	}
+
+	public void setFixturePeriodsFirst(int fixturePeriodsFirst) {
+		this.fixturePeriodsFirst = fixturePeriodsFirst;
+	}
+
+	public int getFixturePeriodsSecond() {
+		return fixturePeriodsSecond;
+	}
+
+	public void setFixturePeriodsSecond(int fixturePeriodsSecond) {
+		this.fixturePeriodsSecond = fixturePeriodsSecond;
 	}
 }

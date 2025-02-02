@@ -2,6 +2,8 @@ package com.snap_search.lvalue.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * API 호출시 응답 데이터를 매핑하기 위한 클래스
  */
@@ -88,12 +90,19 @@ public class ApiLeague {
 	 * API fixtures의 league 객체를 받기 위함
 	 */
 	public static class ApiFixtureLeague {
+		@JsonProperty("id")
 		private Long leagueId;
+		@JsonProperty("name")
 		private String leagueName;
+		@JsonProperty("country")
 		private String leagueCountry;
+		@JsonProperty("logo")
 		private String leagueLogo;
+		@JsonProperty("flag")
 		private String leagueFlag;
+		@JsonProperty("season")
 		private Long leagueSeason;
+		@JsonProperty("round")
 		private String leagueRound;
 
 		public Long getLeagueId() {

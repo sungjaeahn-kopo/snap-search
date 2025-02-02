@@ -15,7 +15,7 @@ public class ApiFixture {
 	private ApiLeague.ApiFixtureLeague league;
 
 	@JsonProperty("teams")
-	private ApiTeam.ApiFixtureTeam teams;
+	private ApiTeam teams;
 
 	@JsonProperty("goals")
 	private ApiGoal goals;
@@ -24,7 +24,9 @@ public class ApiFixture {
 	private ApiScore score;
 
 	public static class ApiGoal {
+		@JsonProperty("home")
 		private Long goalsHome;
+		@JsonProperty("away")
 		private Long goalsAway;
 
 		public Long getGoalsHome() {
@@ -60,11 +62,11 @@ public class ApiFixture {
 		this.league = league;
 	}
 
-	public ApiTeam.ApiFixtureTeam getTeams() {
+	public ApiTeam getTeams() {
 		return teams;
 	}
 
-	public void setTeams(ApiTeam.ApiFixtureTeam teams) {
+	public void setTeams(ApiTeam teams) {
 		this.teams = teams;
 	}
 

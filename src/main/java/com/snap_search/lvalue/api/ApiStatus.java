@@ -1,13 +1,19 @@
 package com.snap_search.lvalue.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * API 호출시 응답 데이터를 매핑하기 위한 클래스
  * Fixture
  */
 public class ApiStatus {
+	@JsonProperty("long")
 	private String fixtureStatusLong;
+	@JsonProperty("short")
 	private String fixtureStatusShort;
+	@JsonProperty("elapsed")
 	private Long fixtureStatusElapsed;
+	@JsonProperty("extra")
 	private Long fixtureStatusExtra;
 
 	public String getFixtureStatusLong() {

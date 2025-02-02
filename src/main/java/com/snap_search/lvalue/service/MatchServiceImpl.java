@@ -3,10 +3,13 @@ package com.snap_search.lvalue.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ public class MatchServiceImpl implements MatchService {
 
 	private final WebClient webClient;
 	private final MatchRepository matchRepository;
+	private static final Logger logger = LoggerFactory.getLogger(MatchServiceImpl.class);
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	public MatchServiceImpl(@Qualifier("webClientForDefault") WebClient webClient, MatchRepository matchRepository) {
@@ -48,13 +52,10 @@ public class MatchServiceImpl implements MatchService {
 	public Optional<Match> getUpcomingMatchByTeam(int teamId, int season) {
 		// 현재 한국 시간 (KST) 가져오기
 		LocalDateTime nowKst = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
 		// 날짜 포맷팅 (DB 조회 시 비교 가능하도록 변환)
 		String nowKstStr = nowKst.format(FORMATTER);
-
 		// 다가오는 경기 리스트 조회 (오름차순 정렬됨)
 		List<Match> upcomingMatches = matchRepository.findUpcomingMatches(teamId, season, nowKstStr);
-
 		// 가장 가까운 경기 반환 (없으면 Optional.empty())
 		return upcomingMatches.stream().findFirst();
 	}
@@ -65,7 +66,7 @@ public class MatchServiceImpl implements MatchService {
 	 */
 	@Override
 	public List<Match> fetchMatcheData(Long leagueId, int teamId) {
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 		// DB에서 더미 데이터 중 현재 시간 이전까지 진행되지 않은 경기 목록 조회
 		List<Integer> upcomingFixtureIds = matchRepository.findUpcomingFixtureIds(now.format(FORMATTER), leagueId,
 			teamId);
@@ -84,9 +85,11 @@ public class MatchServiceImpl implements MatchService {
 
 		// DB에 저장 및 반환
 		if (updatedMatches != null && !updatedMatches.isEmpty()) {
+			logger.info("Saving {} matches into DB", updatedMatches.size());
 			return matchRepository.saveAll(updatedMatches);
 		}
 
+		logger.warn("No matches fetched for leagueId: {} teamId: {}", leagueId, teamId);
 		return List.of();
 	}
 
@@ -96,28 +99,16 @@ public class MatchServiceImpl implements MatchService {
 	 * @return Mono<Match> - 변환된 Match 객체
 	 */
 	private Mono<Match> fetchFixtureById(Integer fixtureId) {
-		System.out.println("🟢 Requesting fixtureId: " + fixtureId);
-
 		return webClient.get()
 			.uri(uriBuilder -> uriBuilder.path("/fixtures").queryParam("id", fixtureId).build())
-			.exchangeToMono(response -> {
-				System.out.println("🟡 Received HTTP Status: " + response.statusCode());
-
-				if (response.statusCode().is2xxSuccessful()) {
-					return response.bodyToMono(new ParameterizedTypeReference<ApiResponse<ApiFixture>>() {
-						})
-						.doOnNext(apiResponse -> System.out.println("🟡 API Response: " + apiResponse));
-				} else {
-					return response.createException()
-						.flatMap(Mono::error);
-				}
+			.retrieve()
+			.bodyToMono(new ParameterizedTypeReference<ApiResponse<ApiFixture>>() {
 			})
-			.timeout(Duration.ofSeconds(10)) // 10초 타임아웃
-			.flatMap(apiResponse -> Mono.justOrEmpty(apiResponse.getResponse().stream()
-				.map(this::convertToDBFormat)
-				.findFirst()))
-			.doOnError(error -> System.err.println("❌ Error for fixtureId " + fixtureId + ": " + error.getMessage()))
-			.doOnSuccess(match -> System.out.println("✅ Converted match: " + match));
+			.map(ApiResponse::getResponse)
+			.filter(responseList -> !responseList.isEmpty()) // 응답이 비어있으면 제거
+			.map(responseList -> convertToDBFormat(responseList.get(0))) // 첫 번째 요소만 변환
+			.doOnError(error -> logger.error("❌ Error for fixtureId {}: {}", fixtureId, error.getMessage()))
+			.doOnSuccess(match -> logger.info("✅ Converted match: {}", match));
 	}
 
 	private Match convertToDBFormat(ApiFixture apiFixture) {
@@ -128,11 +119,12 @@ public class MatchServiceImpl implements MatchService {
 
 			// 기본 정보 (Fixture ID, 경기 날짜, 상태)
 			match.setFixtureId(apiMatch.getFixtureId());
-			match.setFixtureDate(apiMatch.getFixtureDate()); // 경기 날짜
-			match.setFixtureStatusShort(apiMatch.getStatus().getFixtureStatusShort()); // 경기 상태
+			match.setFixtureDate(convertToUTC(apiMatch.getFixtureDate()));
+			match.setFixtureReferee(apiMatch.getFixtureReferee());
 
 			// 리그 정보
 			if (apiFixture.getLeague() != null) {
+				match.setLeagueId(Math.toIntExact(apiFixture.getLeague().getLeagueId()));
 				match.setLeagueName(apiFixture.getLeague().getLeagueName());
 				match.setLeagueSeason(Math.toIntExact(apiFixture.getLeague().getLeagueSeason()));
 				match.setLeagueRound(apiFixture.getLeague().getLeagueRound());
@@ -140,12 +132,15 @@ public class MatchServiceImpl implements MatchService {
 
 			// 홈 팀 정보
 			if (apiFixture.getTeams() != null) {
-				match.setTeamsHomeId(Math.toIntExact(apiFixture.getTeams().getTeamsHomeId()));
-				match.setTeamsHomeName(apiFixture.getTeams().getTeamsHomeName());
-				match.setTeamsHomeLogo(apiFixture.getTeams().getTeamsHomeLogo());
-				match.setTeamsAwayId(Math.toIntExact(apiFixture.getTeams().getTeamsAwayId()));
-				match.setTeamsAwayName(apiFixture.getTeams().getTeamsAwayName());
-				match.setTeamsAwayLogo(apiFixture.getTeams().getTeamsAwayLogo());
+				match.setTeamsHomeId(Math.toIntExact(apiFixture.getTeams().getHome().getId()));
+				match.setTeamsHomeName(apiFixture.getTeams().getHome().getName());
+				match.setTeamsHomeLogo(apiFixture.getTeams().getHome().getLogo());
+				match.setTeamsHomeWinner(apiFixture.getTeams().getHome().getWinner());
+
+				match.setTeamsAwayId(Math.toIntExact(apiFixture.getTeams().getAway().getId()));
+				match.setTeamsAwayName(apiFixture.getTeams().getAway().getName());
+				match.setTeamsAwayLogo(apiFixture.getTeams().getAway().getLogo());
+				match.setTeamsAwayWinner(apiFixture.getTeams().getAway().getWinner());
 			}
 
 			// 경기 결과 (골 정보)
@@ -168,13 +163,39 @@ public class MatchServiceImpl implements MatchService {
 
 			// 경기장 정보 (ApiVenue 활용)
 			if (apiMatch.getVenue() != null) {
-				match.setVenueId(apiMatch.getVenue().getFixtureVenueId().toString());
-				match.setVenueName(apiMatch.getVenue().getFixtureVenueName());
-				match.setVenueCity(apiMatch.getVenue().getFixtureVenueCity());
+				match.setFixtureVenueId(Math.toIntExact(apiMatch.getVenue().getFixtureVenueId()));
+				match.setFixtureVenueName(apiMatch.getVenue().getFixtureVenueName());
+				match.setFixtureVenueCity(apiMatch.getVenue().getFixtureVenueCity());
+			}
+
+			// 경기장 정보 (ApiPeriod 활용)
+			if (apiMatch.getPeriods() != null) {
+				match.setFixturePeriodsFirst(Math.toIntExact(apiMatch.getPeriods().getFixturePeriodsFirst()));
+				match.setFixturePeriodsSecond(Math.toIntExact(apiMatch.getPeriods().getFixturePeriodsSecond()));
+			}
+
+			// 경기장 정보 (ApiStatus 활용)
+			if (apiMatch.getStatus() != null) {
+				match.setFixtureStatusLong(apiMatch.getStatus().getFixtureStatusLong());
+				match.setFixtureStatusShort(apiMatch.getStatus().getFixtureStatusShort());
+				match.setFixtureStatusElapsed(Math.toIntExact(apiMatch.getStatus().getFixtureStatusElapsed()));
+				match.setFixtureStatusExtra(Math.toIntExact(apiMatch.getStatus().getFixtureStatusExtra()));
 			}
 		}
 
 		return match;
+	}
+
+	private String convertToUTC(String dateTimeString) {
+		if (dateTimeString == null || dateTimeString.isBlank())
+			return null;
+
+		// ✅ ISO 8601 형식 파싱 후 UTC 변환
+		ZonedDateTime utcDateTime = ZonedDateTime.parse(dateTimeString)
+			.withZoneSameInstant(ZoneId.of("UTC"));
+
+		// ✅ 원하는 포맷으로 변환 ("yyyy-MM-dd HH:mm:ss UTC")
+		return utcDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'"));
 	}
 
 }
