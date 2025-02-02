@@ -123,14 +123,6 @@ public class MatchEvents {
 		this.assistName = assistName;
 	}
 
-	public String getAssistType() {
-		return eventType;
-	}
-
-	public void setAssistType(String eventType) {
-		this.eventType = eventType;
-	}
-
 	public String getDetail() {
 		return detail;
 	}

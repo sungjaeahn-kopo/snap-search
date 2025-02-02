@@ -13,7 +13,7 @@ public class MatchEventDTO {
 	private String playerName;
 	private Integer assistId;
 	private String assistName;
-	private String assistType;
+	private String eventType;
 	private String detail;
 	private String comments;
 
@@ -28,7 +28,7 @@ public class MatchEventDTO {
 		this.playerName = event.getPlayerName();
 		this.assistId = event.getAssistId();
 		this.assistName = event.getAssistName();
-		this.assistType = event.getAssistType();
+		this.eventType = event.getEventType();
 		this.detail = event.getDetail();
 		this.comments = event.getComments();
 	}
@@ -77,8 +77,8 @@ public class MatchEventDTO {
 		return assistName;
 	}
 
-	public String getAssistType() {
-		return assistType;
+	public String getEventType() {
+		return eventType;
 	}
 
 	public String getDetail() {
