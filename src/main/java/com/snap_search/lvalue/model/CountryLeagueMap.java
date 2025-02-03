@@ -160,4 +160,12 @@ public class CountryLeagueMap {
 	public void setTeamLogo(String teamLogo) {
 		this.teamLogo = teamLogo;
 	}
+
+	// public List<Player> getPlayers() {
+	// 	return players;
+	// }
+	//
+	// public void setPlayers(List<Player> players) {
+	// 	this.players = players;
+	// }
 }

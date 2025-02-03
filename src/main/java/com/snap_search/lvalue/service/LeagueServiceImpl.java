@@ -41,7 +41,6 @@ public class LeagueServiceImpl implements LeagueService {
 			});
 
 		ApiResponse<ApiLeague> response = responseMono.block();
-		System.out.println("League API : " + response);
 
 		if (response != null && response.getResponse() != null) {
 			return response.getResponse().stream().map(apiLeague -> {
