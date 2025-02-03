@@ -37,7 +37,7 @@ public class Match {
 	private Integer scoreFulltimeHome;
 	private Integer scoreFulltimeAway;
 
-	private int fixtureVenueId;
+	private Integer fixtureVenueId;
 	private String fixtureVenueName;
 	private String fixtureVenueCity;
 
