@@ -15,10 +15,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.snap_search.lvalue.api.ApiEvent;
 import com.snap_search.lvalue.api.ApiFixture;
 import com.snap_search.lvalue.api.ApiMatch;
 import com.snap_search.lvalue.api.ApiResponse;
 import com.snap_search.lvalue.model.Match;
+import com.snap_search.lvalue.model.MatchEvents;
+import com.snap_search.lvalue.repository.MatchEventRepository;
 import com.snap_search.lvalue.repository.MatchRepository;
 
 import reactor.core.publisher.Flux;
@@ -29,12 +32,15 @@ public class MatchServiceImpl implements MatchService {
 
 	private final WebClient webClient;
 	private final MatchRepository matchRepository;
+	private final MatchEventRepository matchEventsRepository;
 	private static final Logger logger = LoggerFactory.getLogger(MatchServiceImpl.class);
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-	public MatchServiceImpl(@Qualifier("webClientForDefault") WebClient webClient, MatchRepository matchRepository) {
+	public MatchServiceImpl(@Qualifier("webClientForDefault") WebClient webClient, MatchRepository matchRepository,
+		MatchEventRepository matchEventsRepository) {
 		this.webClient = webClient;
 		this.matchRepository = matchRepository;
+		this.matchEventsRepository = matchEventsRepository;
 	}
 
 	@Override
@@ -73,6 +79,17 @@ public class MatchServiceImpl implements MatchService {
 		if (upcomingFixtureIds.isEmpty()) {
 			return List.of(); // 호출할 fixture_id가 없으면 빈 리스트 반환
 		}
+
+		// List<Integer> upcomingFixtureIds = new ArrayList<>();
+		// upcomingFixtureIds.add(1208256);
+		// upcomingFixtureIds.add(1208249);
+		// upcomingFixtureIds.add(1208235);
+		// upcomingFixtureIds.add(1208230);
+		// upcomingFixtureIds.add(1208216);
+		// upcomingFixtureIds.add(1208208);
+		// upcomingFixtureIds.add(1208196);
+		// upcomingFixtureIds.add(1208186);
+		// upcomingFixtureIds.add(1208176);
 
 		// 각 fixture_id별로 개별 API 호출 후 병렬 처리 (비동기)
 		List<Match> updatedMatches = Flux.fromIterable(upcomingFixtureIds)
@@ -180,9 +197,42 @@ public class MatchServiceImpl implements MatchService {
 				match.setFixtureStatusElapsed(Math.toIntExact(apiMatch.getStatus().getFixtureStatusElapsed()));
 				match.setFixtureStatusExtra(Math.toIntExact(apiMatch.getStatus().getFixtureStatusExtra()));
 			}
+
+			if (apiFixture.getEvents() != null) {
+				// 경기 이벤트 (ApiEvents 활용)
+				List<MatchEvents> matchEventsList = apiFixture.getEvents().stream()
+					.map(event -> convertToMatchEvent(event, match)) // Match와 연결
+					.toList();
+				matchEventsRepository.saveAll(matchEventsList);
+			}
+
 		}
 
 		return match;
+	}
+
+	private MatchEvents convertToMatchEvent(ApiEvent apiEvent, Match match) {
+		MatchEvents event = new MatchEvents();
+
+		event.setFixtureId(match.getFixtureId()); // Match와 연관된 fixtureId
+		event.setTimeElapsed(apiEvent.getEventTime().getEventElapsed());
+		event.setTimeExtra(apiEvent.getEventTime().getEventExtra());
+
+		event.setTeamId(apiEvent.getEventTeam().getTeamId());
+		event.setTeamName(apiEvent.getEventTeam().getTeamName());
+		event.setTeamLogo(apiEvent.getEventTeam().getTeamLogo());
+
+		event.setPlayerId(apiEvent.getEventPlayer().getPlayerId());
+		event.setPlayerName(apiEvent.getEventPlayer().getPlayerName());
+
+		event.setAssistId(apiEvent.getEventAssist().getAssistId());
+		event.setAssistName(apiEvent.getEventAssist().getAssistName());
+
+		event.setEventType(apiEvent.getType());
+		event.setDetail(apiEvent.getDetail());
+		event.setComments(apiEvent.getComments());
+
+		return event;
 	}
 
 	private String convertToUTC(String dateTimeString) {

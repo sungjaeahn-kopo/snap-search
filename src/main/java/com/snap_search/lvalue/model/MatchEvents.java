@@ -14,12 +14,12 @@ public class MatchEvents {
 	private Long id;  // 개별 이벤트의 고유 ID 추가
 
 	private Long fixtureId;
-	private int timeElapsed;
-	private int timeExtra;
-	private int teamId;
+	private Integer timeElapsed;
+	private Integer timeExtra;
+	private Integer teamId;
 	private String teamName;
 	private String teamLogo;
-	private int playerId;
+	private Integer playerId;
 	private String playerName;
 	private Integer assistId;
 	private String assistName;
@@ -35,14 +35,6 @@ public class MatchEvents {
 		this.id = id;
 	}
 
-	public String getEventType() {
-		return eventType;
-	}
-
-	public void setEventType(String eventType) {
-		this.eventType = eventType;
-	}
-
 	public Long getFixtureId() {
 		return fixtureId;
 	}
@@ -51,27 +43,27 @@ public class MatchEvents {
 		this.fixtureId = fixtureId;
 	}
 
-	public int getTimeElapsed() {
+	public Integer getTimeElapsed() {
 		return timeElapsed;
 	}
 
-	public void setTimeElapsed(int timeElapsed) {
+	public void setTimeElapsed(Integer timeElapsed) {
 		this.timeElapsed = timeElapsed;
 	}
 
-	public int getTimeExtra() {
+	public Integer getTimeExtra() {
 		return timeExtra;
 	}
 
-	public void setTimeExtra(int timeExtra) {
+	public void setTimeExtra(Integer timeExtra) {
 		this.timeExtra = timeExtra;
 	}
 
-	public int getTeamId() {
+	public Integer getTeamId() {
 		return teamId;
 	}
 
-	public void setTeamId(int teamId) {
+	public void setTeamId(Integer teamId) {
 		this.teamId = teamId;
 	}
 
@@ -91,11 +83,11 @@ public class MatchEvents {
 		this.teamLogo = teamLogo;
 	}
 
-	public int getPlayerId() {
+	public Integer getPlayerId() {
 		return playerId;
 	}
 
-	public void setPlayerId(int playerId) {
+	public void setPlayerId(Integer playerId) {
 		this.playerId = playerId;
 	}
 
@@ -121,6 +113,14 @@ public class MatchEvents {
 
 	public void setAssistName(String assistName) {
 		this.assistName = assistName;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
 	}
 
 	public String getDetail() {

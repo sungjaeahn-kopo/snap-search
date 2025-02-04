@@ -1,5 +1,7 @@
 package com.snap_search.lvalue.api;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,6 +24,9 @@ public class ApiFixture {
 
 	@JsonProperty("score")
 	private ApiScore score;
+
+	@JsonProperty("events")
+	private List<ApiEvent> events;
 
 	public static class ApiGoal {
 		@JsonProperty("home")
@@ -84,5 +89,13 @@ public class ApiFixture {
 
 	public void setScore(ApiScore score) {
 		this.score = score;
+	}
+
+	public List<ApiEvent> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<ApiEvent> events) {
+		this.events = events;
 	}
 }

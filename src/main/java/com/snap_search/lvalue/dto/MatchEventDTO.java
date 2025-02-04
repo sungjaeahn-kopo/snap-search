@@ -4,12 +4,12 @@ import com.snap_search.lvalue.model.MatchEvents;
 
 public class MatchEventDTO {
 	private Long fixtureId;
-	private int timeElapsed;
-	private int timeExtra;
-	private int teamId;
+	private Integer timeElapsed;
+	private Integer timeExtra;
+	private Integer teamId;
 	private String teamName;
 	private String teamLogo;
-	private int playerId;
+	private Integer playerId;
 	private String playerName;
 	private Integer assistId;
 	private String assistName;
@@ -41,15 +41,15 @@ public class MatchEventDTO {
 		return fixtureId;
 	}
 
-	public int getTimeElapsed() {
+	public Integer getTimeElapsed() {
 		return timeElapsed;
 	}
 
-	public int getTimeExtra() {
+	public Integer getTimeExtra() {
 		return timeExtra;
 	}
 
-	public int getTeamId() {
+	public Integer getTeamId() {
 		return teamId;
 	}
 
@@ -61,7 +61,7 @@ public class MatchEventDTO {
 		return teamLogo;
 	}
 
-	public int getPlayerId() {
+	public Integer getPlayerId() {
 		return playerId;
 	}
 
