@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,22 +75,17 @@ public class MatchServiceImpl implements MatchService {
 	public List<Match> fetchMatcheData(int teamId) {
 		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 		// DB에서 더미 데이터 중 현재 시간 이전까지 진행되지 않은 경기 목록 조회
-		List<Integer> upcomingFixtureIds = matchRepository.findUpcomingFixtureIds(now.format(FORMATTER), teamId);
+//		List<Integer> upcomingFixtureIds = matchRepository.findUpcomingFixtureIds(now.format(FORMATTER), teamId);
+//
+//		if (upcomingFixtureIds.isEmpty()) {
+//			return List.of(); // 호출할 fixture_id가 없으면 빈 리스트 반환
+//		}
 
-		if (upcomingFixtureIds.isEmpty()) {
-			return List.of(); // 호출할 fixture_id가 없으면 빈 리스트 반환
-		}
-
-		// List<Integer> upcomingFixtureIds = new ArrayList<>();
-		// upcomingFixtureIds.add(1208256);
-		// upcomingFixtureIds.add(1208249);
-		// upcomingFixtureIds.add(1208235);
-		// upcomingFixtureIds.add(1208230);
-		// upcomingFixtureIds.add(1208216);
-		// upcomingFixtureIds.add(1208208);
-		// upcomingFixtureIds.add(1208196);
-		// upcomingFixtureIds.add(1208186);
-		// upcomingFixtureIds.add(1208176);
+		 List<Integer> upcomingFixtureIds = new ArrayList<>();
+		 Integer[] test = {1299110,
+				 1299093,
+				 1208180};
+		 upcomingFixtureIds.addAll(List.of(test));
 
 		// 각 fixture_id별로 개별 API 호출 후 병렬 처리 (비동기)
 		List<Match> updatedMatches = Flux.fromIterable(upcomingFixtureIds)
