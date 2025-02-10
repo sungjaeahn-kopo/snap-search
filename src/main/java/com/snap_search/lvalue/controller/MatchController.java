@@ -37,11 +37,9 @@ public class MatchController {
 	}
 
 	@GetMapping("/upcoming")
-	public ResponseEntity<Match> getUpcomingMatchByTeam(@RequestParam("teamId") int teamId,
-		@RequestParam("season") int season) {
-		Optional<Match> match = matchService.getUpcomingMatchByTeam(teamId, season);
-		return match.map(ResponseEntity::ok)
-			.orElseGet(() -> ResponseEntity.notFound().build());
+	public Optional<Match> getUpcomingMatchByTeam(@RequestParam("teamId") int teamId,
+												  @RequestParam("season") int season) {
+		return matchService.getUpcomingMatchByTeam(teamId, season);
 	}
 
 	@GetMapping("/fetch")
