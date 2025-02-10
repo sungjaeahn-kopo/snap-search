@@ -13,19 +13,19 @@ public class Match {
 	private String fixtureDate;
 	private String fixtureStatusLong;
 	private String fixtureStatusShort;
-	private int fixtureStatusElapsed;
-	private int fixtureStatusExtra;
+	private Integer fixtureStatusElapsed;
+	private Integer fixtureStatusExtra;
 	private String leagueName;
-	private int leagueId;
-	private int leagueSeason;
+	private Integer leagueId;
+	private Integer leagueSeason;
 	private String leagueRound;
 
-	private int teamsHomeId;
+	private Integer teamsHomeId;
 	private String teamsHomeName;
 	private String teamsHomeLogo;
 	private String teamsHomeWinner;
 
-	private int teamsAwayId;
+	private Integer teamsAwayId;
 	private String teamsAwayName;
 	private String teamsAwayLogo;
 	private String teamsAwayWinner;
@@ -41,8 +41,8 @@ public class Match {
 	private String fixtureVenueName;
 	private String fixtureVenueCity;
 
-	private int fixturePeriodsFirst;
-	private int fixturePeriodsSecond;
+	private Integer fixturePeriodsFirst;
+	private Integer fixturePeriodsSecond;
 
 	public Long getFixtureId() {
 		return fixtureId;
@@ -84,19 +84,19 @@ public class Match {
 		this.fixtureStatusShort = fixtureStatusShort;
 	}
 
-	public int getFixtureStatusElapsed() {
+	public Integer getFixtureStatusElapsed() {
 		return fixtureStatusElapsed;
 	}
 
-	public void setFixtureStatusElapsed(int fixtureStatusElapsed) {
+	public void setFixtureStatusElapsed(Integer fixtureStatusElapsed) {
 		this.fixtureStatusElapsed = fixtureStatusElapsed;
 	}
 
-	public int getFixtureStatusExtra() {
+	public Integer getFixtureStatusExtra() {
 		return fixtureStatusExtra;
 	}
 
-	public void setFixtureStatusExtra(int fixtureStatusExtra) {
+	public void setFixtureStatusExtra(Integer fixtureStatusExtra) {
 		this.fixtureStatusExtra = fixtureStatusExtra;
 	}
 
@@ -108,19 +108,19 @@ public class Match {
 		this.leagueName = leagueName;
 	}
 
-	public int getLeagueId() {
+	public Integer getLeagueId() {
 		return leagueId;
 	}
 
-	public void setLeagueId(int leagueId) {
+	public void setLeagueId(Integer leagueId) {
 		this.leagueId = leagueId;
 	}
 
-	public int getLeagueSeason() {
+	public Integer getLeagueSeason() {
 		return leagueSeason;
 	}
 
-	public void setLeagueSeason(int leagueSeason) {
+	public void setLeagueSeason(Integer leagueSeason) {
 		this.leagueSeason = leagueSeason;
 	}
 
@@ -132,11 +132,11 @@ public class Match {
 		this.leagueRound = leagueRound;
 	}
 
-	public int getTeamsHomeId() {
+	public Integer getTeamsHomeId() {
 		return teamsHomeId;
 	}
 
-	public void setTeamsHomeId(int teamsHomeId) {
+	public void setTeamsHomeId(Integer teamsHomeId) {
 		this.teamsHomeId = teamsHomeId;
 	}
 
@@ -164,11 +164,11 @@ public class Match {
 		this.teamsHomeWinner = teamsHomeWinner;
 	}
 
-	public int getTeamsAwayId() {
+	public Integer getTeamsAwayId() {
 		return teamsAwayId;
 	}
 
-	public void setTeamsAwayId(int teamsAwayId) {
+	public void setTeamsAwayId(Integer teamsAwayId) {
 		this.teamsAwayId = teamsAwayId;
 	}
 
@@ -244,11 +244,11 @@ public class Match {
 		this.scoreFulltimeAway = scoreFulltimeAway;
 	}
 
-	public int getFixtureVenueId() {
+	public Integer getFixtureVenueId() {
 		return fixtureVenueId;
 	}
 
-	public void setFixtureVenueId(int fixtureVenueId) {
+	public void setFixtureVenueId(Integer fixtureVenueId) {
 		this.fixtureVenueId = fixtureVenueId;
 	}
 
@@ -268,19 +268,19 @@ public class Match {
 		this.fixtureVenueCity = fixtureVenueCity;
 	}
 
-	public int getFixturePeriodsFirst() {
+	public Integer getFixturePeriodsFirst() {
 		return fixturePeriodsFirst;
 	}
 
-	public void setFixturePeriodsFirst(int fixturePeriodsFirst) {
+	public void setFixturePeriodsFirst(Integer fixturePeriodsFirst) {
 		this.fixturePeriodsFirst = fixturePeriodsFirst;
 	}
 
-	public int getFixturePeriodsSecond() {
+	public Integer getFixturePeriodsSecond() {
 		return fixturePeriodsSecond;
 	}
 
-	public void setFixturePeriodsSecond(int fixturePeriodsSecond) {
+	public void setFixturePeriodsSecond(Integer fixturePeriodsSecond) {
 		this.fixturePeriodsSecond = fixturePeriodsSecond;
 	}
 }
