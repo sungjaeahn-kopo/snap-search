@@ -26,6 +26,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.azure:azure-storage-blob:12.21.0'
+    implementation 'net.coobird:thumbnailator:0.4.18'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 //	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
@@ -36,3 +39,15 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//tasks.register("buildLocal", Exec) {
+//    description = "Build the project with the local profile"
+//    group = "Custom Tasks"
+//    commandLine "./gradlew", "build", "-Pprofile=local"
+//}
+//
+//tasks.register("buildProd", Exec) {
+//    description = "Build the project with the prod profile"
+//    group = "Custom Tasks"
+//    commandLine "./gradlew", "build", "-Pprofile=prod"
+//}
