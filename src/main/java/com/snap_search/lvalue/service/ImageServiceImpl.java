@@ -47,10 +47,15 @@ public class ImageServiceImpl implements ImageService {
 		List<League> leagues = leagueRepository.findAll(pageable).getContent();
 
 		for (League league : leagues) {
-			if (league.getLogo() != null) {
+			String currentLogo = league.getLogo();
+
+			if (isFromOriginalDomain(currentLogo)) {
 				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
-				String updatedUrl = processAndUploadMultipleSizes("league-logos", league.getLogo(), sizes, "image/png");
+				String updatedUrl = processAndUploadMultipleSizes("league-logos", currentLogo, sizes, "image/png");
 				league.setLogo(updatedUrl);
+			} else {
+				// 이미 처리된 경우 로그로 남김
+				System.out.println("No update required for league ID: " + league.getId());
 			}
 		}
 
@@ -64,15 +69,20 @@ public class ImageServiceImpl implements ImageService {
 		List<Team> teams = teamRepository.findAll(pageable).getContent();
 
 		for (Team team : teams) {
-			if (team.getLogo() != null) {
+			String currentLogo = team.getLogo();
+
+			if (isFromOriginalDomain(currentLogo)) {
 				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
 				String updatedUrl = null;
 				try {
-					updatedUrl = processAndUploadMultipleSizes("team-logos", team.getLogo(), sizes, "image/png");
+					updatedUrl = processAndUploadMultipleSizes("team-logos", currentLogo, sizes, "image/png");
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 				team.setLogo(updatedUrl);
+			} else {
+				// 이미 처리된 경우 로그로 남김
+				System.out.println("No update required for team ID: " + team.getId());
 			}
 		}
 
@@ -86,11 +96,16 @@ public class ImageServiceImpl implements ImageService {
 		List<Player> players = playerRepository.findAll(pageable).getContent();
 
 		for (Player player : players) {
-			if (player.getPhoto() != null) {
+			String currentLogo = player.getPhoto();
+
+			if (isFromOriginalDomain(currentLogo)) {
 				List<int[]> sizes = Arrays.asList(new int[] {150, 150}, new int[] {80, 80});
 				String updatedUrl = processAndUploadMultipleSizes("player-photos", player.getPhoto(), sizes,
 					"image/png");
 				player.setPhoto(updatedUrl);
+			} else {
+				// 이미 처리된 경우 로그로 남김
+				System.out.println("No update required for player ID: " + player.getId());
 			}
 		}
 
@@ -245,5 +260,9 @@ public class ImageServiceImpl implements ImageService {
 
 	private String extractFileNameFromUrl(String imageUrl) {
 		return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+	}
+
+	private boolean isFromOriginalDomain(String logoUrl) {
+		return logoUrl != null && logoUrl.contains("media.api-sports.io");
 	}
 }
