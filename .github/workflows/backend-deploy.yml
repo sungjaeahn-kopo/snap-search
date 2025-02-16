@@ -29,6 +29,8 @@ jobs:
           echo "azure.storage.connection-string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" >> src/main/resources/application.properties
           echo "azure.storage.container-name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" >> src/main/resources/application.properties
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       # 3. Spring Boot 빌드 (환경별 프로파일 적용)
       - name: Build Spring Boot application
