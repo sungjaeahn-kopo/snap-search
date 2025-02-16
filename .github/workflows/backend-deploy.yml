@@ -26,8 +26,12 @@ jobs:
 
       - name: Add application.properties with secrets
         run: |
-          echo "azure.storage.connection-string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" >> src/main/resources/application.properties
-          echo "azure.storage.container-name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" >> src/main/resources/application.properties
+          # local 프로파일에 값 추가
+          echo "azure.storage.connection-string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" >> src/main/resources/application-local.properties
+          echo "azure.storage.container-name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" >> src/main/resources/application-local.properties
+          # prod 프로파일에 값 추가
+          echo "azure.storage.connection-string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" >> src/main/resources/application-prod.properties
+          echo "azure.storage.container-name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" >> src/main/resources/application-prod.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
