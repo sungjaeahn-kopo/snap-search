@@ -52,15 +52,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
-
-      # 6. 원격 서버로 배포
-      - name: Deploy backend to server
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > backend_key.pem
-          chmod 600 backend_key.pem
-          ssh -o StrictHostKeyChecking=no -i backend_key.pem ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
-            docker stop backend || true
-            docker rm backend || true
-            docker run -d --name backend -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod ${{ secrets.DOCKER_USERNAME }}/backend:latest
-          EOF
