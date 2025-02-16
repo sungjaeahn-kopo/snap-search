@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SPRING_PROFILE: prod   # 운영 환경에서는 prod 사용 (필요시 변경 가능)
+      SPRING_PROFILE: local   # 운영 환경에서는 prod 사용 (필요시 변경 가능)
 
     steps:
       # 1. 코드 체크아웃
