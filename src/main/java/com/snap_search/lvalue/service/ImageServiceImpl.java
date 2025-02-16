@@ -15,9 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.snap_search.lvalue.model.Country;
 import com.snap_search.lvalue.model.League;
 import com.snap_search.lvalue.model.Player;
 import com.snap_search.lvalue.model.Team;
+import com.snap_search.lvalue.repository.CountryRepository;
 import com.snap_search.lvalue.repository.LeagueRepository;
 import com.snap_search.lvalue.repository.PlayerRepository;
 import com.snap_search.lvalue.repository.TeamRepository;
@@ -37,6 +39,9 @@ public class ImageServiceImpl implements ImageService {
 
 	@Autowired
 	private PlayerRepository playerRepository;
+
+	@Autowired
+	private CountryRepository countryRepository;
 
 	private static final int BATCH_SIZE = 100;
 
@@ -110,6 +115,29 @@ public class ImageServiceImpl implements ImageService {
 		}
 
 		playerRepository.saveAll(players);
+	}
+
+	@Override
+	@Transactional
+	public void processBatchForCountry(int page) throws Exception {
+		Pageable pageable = PageRequest.of(page, BATCH_SIZE);
+		List<Country> countries = countryRepository.findAll(pageable).getContent();
+
+		for (Country country : countries) {
+			String currentLogo = country.getFlag();
+
+			if (isFromOriginalDomain(currentLogo)) {
+				List<int[]> sizes = Arrays.asList(new int[] {150, 150}, new int[] {35, 35});
+				String updatedUrl = processAndUploadMultipleSizes("country-photos", currentLogo, sizes,
+					"image/png");
+				country.setFlag(updatedUrl);
+			} else {
+				// 이미 처리된 경우 로그로 남김
+				System.out.println("No update required for player ID: " + country.getId());
+			}
+		}
+
+		countryRepository.saveAll(countries);
 	}
 
 	@Override

@@ -7,6 +7,8 @@ public interface ImageService {
 
 	void processBatchForPlayer(int page) throws Exception;
 
+	void processBatchForCountry(int page) throws Exception;
+
 	void optimizeFirstLeagueLogo() throws Exception;
 
 	void optimizeFirstTeamLogo() throws Exception;
