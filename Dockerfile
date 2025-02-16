@@ -2,7 +2,7 @@
 FROM gradle:8.11.1-jdk17 AS build
 WORKDIR /app
 COPY . /app
-RUN ./gradlew build clean build -Pprofile=local -x test --no-daemon
+RUN ./gradlew clean build -Pprofile=local -x test --no-daemon
 
 # Step 2: Use a lightweight JDK image to run the JAR
 FROM openjdk:17-jdk-slim
