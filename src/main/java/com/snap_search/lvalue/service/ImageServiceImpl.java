@@ -254,7 +254,8 @@ public class ImageServiceImpl implements ImageService {
 			// 메모리에 저장된 원본 데이터를 새로운 InputStream으로 생성
 			InputStream imageStream = new ByteArrayInputStream(originalImageBytes);
 
-			InputStream resizedImage = ImageOptimizationUtil.resizeImage(imageStream, width, height);
+			InputStream resizedImage = contentType == "image/svg+xml" ? imageStream :
+				ImageOptimizationUtil.resizeImage(imageStream, width, height);
 			String sizeString = String.format("%dx%d", width, height);
 			String sizeDirectory = String.format("%s/%s", directory, sizeString);
 			String fileName = baseFileName;
