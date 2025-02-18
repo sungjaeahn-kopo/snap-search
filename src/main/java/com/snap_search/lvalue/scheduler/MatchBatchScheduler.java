@@ -27,7 +27,7 @@ public class MatchBatchScheduler {
 	/**
 	 * 매일 00:00 기준으로 업데이트가 필요한 경기 정보를 가져와 업데이트하는 배치 작업
 	 */
-	@Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 10 0 * * *", zone = "Asia/Seoul")
 	public void fetchMatchDataBatch() {
 		logger.info("[Match Batch] 경기 데이터 업데이트 시작");
 
