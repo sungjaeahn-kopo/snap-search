@@ -126,8 +126,9 @@ public class ImageServiceImpl implements ImageService {
 		for (Country country : countries) {
 			String currentLogo = country.getFlag();
 
-			if (isFromOriginalDomain(currentLogo)) {
-				List<int[]> sizes = Arrays.asList(new int[] {150, 150}, new int[] {35, 35});
+			// if (isFromOriginalDomain(currentLogo)) {
+			if (currentLogo != null) {
+				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
 				String updatedUrl = processAndUploadMultipleSizes("country-photos", currentLogo, sizes,
 					"image/svg+xml");
 				country.setFlag(updatedUrl);
