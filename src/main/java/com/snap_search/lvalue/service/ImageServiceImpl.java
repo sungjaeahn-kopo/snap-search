@@ -129,7 +129,7 @@ public class ImageServiceImpl implements ImageService {
 			if (isFromOriginalDomain(currentLogo)) {
 				List<int[]> sizes = Arrays.asList(new int[] {150, 150}, new int[] {35, 35});
 				String updatedUrl = processAndUploadMultipleSizes("country-photos", currentLogo, sizes,
-					"image/png");
+					"image/svg+xml");
 				country.setFlag(updatedUrl);
 			} else {
 				// 이미 처리된 경우 로그로 남김
