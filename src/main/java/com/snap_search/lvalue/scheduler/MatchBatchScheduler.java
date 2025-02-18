@@ -27,20 +27,18 @@ public class MatchBatchScheduler {
 	/**
 	 * 매일 00:00 기준으로 업데이트가 필요한 경기 정보를 가져와 업데이트하는 배치 작업
 	 */
-	@Scheduled(cron = "0 10 0 * * *", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 15 0 * * *", zone = "Asia/Seoul")
 	public void fetchMatchDataBatch() {
 		logger.info("[Match Batch] 경기 데이터 업데이트 시작");
 
-		for (int leagueId : TARGET_LEAGUES) {
-			List<Integer> teamIds = teamRepository.findIdByLeagueIds(leagueId);
+		List<Integer> teamIds = teamRepository.findTeamIdsByLeagueId(TARGET_LEAGUES);
 
-			for (int teamId : teamIds) {
-				try {
-					matchService.fetchMatcheData(teamId);
-					System.out.println("Match batch completed for teamId: " + teamId);
-				} catch (Exception e) {
-					System.err.println("Error processing match batch for teamId: " + teamId + " - " + e.getMessage());
-				}
+		for (int teamId : teamIds) {
+			try {
+				matchService.fetchMatcheData(teamId);
+				System.out.println("Match batch completed for teamId: " + teamId);
+			} catch (Exception e) {
+				System.err.println("Error processing match batch for teamId: " + teamId + " - " + e.getMessage());
 			}
 		}
 	}
