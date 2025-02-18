@@ -12,7 +12,7 @@ public class ImageBatchScheduler {
 	@Autowired
 	private ImageService imageService;
 
-	private int leaguePage = 0;
+	private int leaguePage = 23;
 	private int teamPage = 0;
 	private int playerPage = 0;
 	private int countryPage = 0;

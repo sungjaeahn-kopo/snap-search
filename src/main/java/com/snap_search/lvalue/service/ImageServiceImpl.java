@@ -87,7 +87,7 @@ public class ImageServiceImpl implements ImageService {
 				team.setLogo(updatedUrl);
 			} else {
 				// 이미 처리된 경우 로그로 남김
-				System.out.println("No update required for team ID: " + team.getId());
+				System.out.println("No update required for team ID: " + team.getId() + " " + team.getName());
 			}
 		}
 
@@ -125,7 +125,7 @@ public class ImageServiceImpl implements ImageService {
 
 		for (Country country : countries) {
 			String currentLogo = country.getFlag();
-			
+
 			if (isFromOriginalDomain(currentLogo)) {
 				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
 				String updatedUrl = processAndUploadMultipleSizes("country-photos", currentLogo, sizes,
@@ -260,6 +260,7 @@ public class ImageServiceImpl implements ImageService {
 			String sizeDirectory = String.format("%s/%s", directory, sizeString);
 			String fileName = baseFileName;
 
+			System.out.println("=== blob update === " + imageUrl);
 			// Blob Storage에 업로드
 			String blobUrl = azureBlobService.uploadBlob(sizeDirectory + "/", fileName, resizedImage,
 				resizedImage.available(), contentType);

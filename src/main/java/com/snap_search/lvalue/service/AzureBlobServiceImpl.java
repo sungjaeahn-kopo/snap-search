@@ -33,6 +33,7 @@ public class AzureBlobServiceImpl implements AzureBlobService {
 	public String uploadBlob(String directoryPath, String fileName, InputStream inputStream, long fileSize,
 		String contentType) {
 		try {
+			System.out.println("===== start uploadBlob =====");
 			BlobContainerClient containerClient = getContainerClient();
 			BlobClient blobClient = containerClient.getBlobClient(directoryPath + fileName);
 
