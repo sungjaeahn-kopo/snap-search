@@ -2,7 +2,6 @@ package com.snap_search.lvalue.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -55,34 +54,17 @@ public class ImageServiceImpl implements ImageService {
 	public void processBatchForCoach(int page) throws Exception {
 		Pageable pageable = PageRequest.of(page, BATCH_SIZE);
 		List<Coach> coaches = coachRepository.findAll(pageable).getContent();
-		List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
 
 		for (Coach coach : coaches) {
-			if (isFromOriginalDomain(coach.getPhoto())) {
-				String updatedUrl = processAndUploadMultipleSizes("coach-logos", coach.getPhoto(), sizes, "image/png");
+			String currentLogo = coach.getPhoto();
+
+			if (isFromOriginalDomain(currentLogo)) {
+				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
+				String updatedUrl = processAndUploadMultipleSizes("coach-logos", currentLogo, sizes, "image/png");
 				coach.setPhoto(updatedUrl);
 			} else {
 				// 이미 처리된 경우 로그로 남김
 				System.out.println("No update required for league ID: " + coach.getId());
-			}
-
-			for (int i = 0; i <= 25; i++) {
-				String careerTeamIdField = "career_" + i + "_team_id";
-				String careerTeamLogoField = "career_" + i + "_team_logo";
-
-				Integer careerTeamId = getCareerTeamId(coach, careerTeamIdField); // 리플렉션을 사용하여 teamId 가져오기
-				String currentLogo = getCareerTeamLogo(coach, careerTeamLogoField);
-
-				System.err.println("upload logo for " + careerTeamId + ": " + currentLogo);
-				if (isFromOriginalDomain(currentLogo)) {
-					try {
-						String updatedLogoUrl = processAndUploadMultipleSizes("team-logos", currentLogo, sizes,
-							"image/png");
-						setCareerTeamLogo(coach, careerTeamLogoField, updatedLogoUrl); // 리플렉션을 사용하여 업데이트
-					} catch (Exception e) {
-						System.err.println("Failed to upload logo for " + careerTeamIdField + ": " + e.getMessage());
-					}
-				}
 			}
 		}
 
@@ -339,37 +321,4 @@ public class ImageServiceImpl implements ImageService {
 	private boolean isFromOriginalDomain(String logoUrl) {
 		return logoUrl != null && logoUrl.contains("media.api-sports.io");
 	}
-
-	private Integer getCareerTeamId(Coach coach, String fieldName) {
-		try {
-			Field field = Coach.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			return (Integer)field.get(coach);
-		} catch (Exception e) {
-			System.err.println("Error getting field " + fieldName + ": " + e.getMessage());
-			return null;
-		}
-	}
-
-	private String getCareerTeamLogo(Coach coach, String fieldName) {
-		try {
-			Field field = Coach.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			return (String)field.get(coach);
-		} catch (Exception e) {
-			System.err.println("Error getting field " + fieldName + ": " + e.getMessage());
-			return null;
-		}
-	}
-
-	private void setCareerTeamLogo(Coach coach, String fieldName, String value) {
-		try {
-			Field field = Coach.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			field.set(coach, value);
-		} catch (Exception e) {
-			System.err.println("Error setting field " + fieldName + ": " + e.getMessage());
-		}
-	}
-
 }
