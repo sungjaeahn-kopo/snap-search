@@ -1,7 +1,6 @@
 package com.snap_search.lvalue.scheduler;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.snap_search.lvalue.service.ImageService;
@@ -21,15 +20,15 @@ public class ImageBatchScheduler {
 	private static final int BATCH_INTERVAL = 600000;
 	private static final int INITIAL_DELAY = 30000;
 
-	@Scheduled(fixedRate = BATCH_INTERVAL, initialDelay = INITIAL_DELAY)
-	public void processLeagueBatch() {
-		try {
-			imageService.processBatchForCoach(coachPage);
-			coachPage++;
-		} catch (Exception e) {
-			System.err.println("Error processing coach batch: " + e.getMessage());
-		}
-	}
+	// @Scheduled(fixedRate = BATCH_INTERVAL, initialDelay = INITIAL_DELAY)
+	// public void processLeagueBatch() {
+	// 	try {
+	// 		imageService.processBatchForCoach(coachPage);
+	// 		coachPage++;
+	// 	} catch (Exception e) {
+	// 		System.err.println("Error processing coach batch: " + e.getMessage());
+	// 	}
+	// }
 	// @Scheduled(fixedRate = BATCH_INTERVAL, initialDelay = INITIAL_DELAY)
 	// public void processLeagueBatch() {
 	// 	try {
