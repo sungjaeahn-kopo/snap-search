@@ -1,6 +1,8 @@
 package com.snap_search.lvalue.service;
 
 public interface ImageService {
+	void processBatchForCoach(int page) throws Exception;
+
 	void processBatchForLeague(int page) throws Exception;
 
 	void processBatchForTeam(int page) throws Exception;

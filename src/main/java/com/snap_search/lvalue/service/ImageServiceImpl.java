@@ -15,10 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.snap_search.lvalue.model.Coach;
 import com.snap_search.lvalue.model.Country;
 import com.snap_search.lvalue.model.League;
 import com.snap_search.lvalue.model.Player;
 import com.snap_search.lvalue.model.Team;
+import com.snap_search.lvalue.repository.CoachRepository;
 import com.snap_search.lvalue.repository.CountryRepository;
 import com.snap_search.lvalue.repository.LeagueRepository;
 import com.snap_search.lvalue.repository.PlayerRepository;
@@ -32,6 +34,8 @@ public class ImageServiceImpl implements ImageService {
 	private AzureBlobService azureBlobService;
 
 	@Autowired
+	private CoachRepository coachRepository;
+	@Autowired
 	private LeagueRepository leagueRepository;
 
 	@Autowired
@@ -44,6 +48,28 @@ public class ImageServiceImpl implements ImageService {
 	private CountryRepository countryRepository;
 
 	private static final int BATCH_SIZE = 100;
+
+	@Override
+	@Transactional
+	public void processBatchForCoach(int page) throws Exception {
+		Pageable pageable = PageRequest.of(page, BATCH_SIZE);
+		List<Coach> coaches = coachRepository.findAll(pageable).getContent();
+
+		for (Coach coach : coaches) {
+			String currentLogo = coach.getPhoto();
+
+			if (isFromOriginalDomain(currentLogo)) {
+				List<int[]> sizes = Arrays.asList(new int[] {100, 100}, new int[] {35, 35});
+				String updatedUrl = processAndUploadMultipleSizes("coach-logos", currentLogo, sizes, "image/png");
+				coach.setPhoto(updatedUrl);
+			} else {
+				// 이미 처리된 경우 로그로 남김
+				System.out.println("No update required for league ID: " + coach.getId());
+			}
+		}
+
+		coachRepository.saveAll(coaches);
+	}
 
 	@Override
 	@Transactional
