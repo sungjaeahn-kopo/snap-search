@@ -15,6 +15,12 @@ public class ImageOptimizationUtil {
 		// PNG의 투명도(알파 채널)를 유지한 상태로 새로운 BufferedImage 생성
 		BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = resizedImage.createGraphics();
+		
+		// 고품질 리사이징 옵션 설정
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
 		g2d.drawImage(bufferedImage, 0, 0, width, height, null);
 		g2d.dispose();
 
